@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Plan') {
+        stage('View') {
             steps {
                 sh 'pwd'
                 sh 'ls'
