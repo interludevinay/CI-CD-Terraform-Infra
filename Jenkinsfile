@@ -3,11 +3,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script{
-                        dir("terraform")
-                        {
-                            git "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
-                        }
+                script {
+                    dir("terraform") {
+                        git "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
+                    }
+                }
             }
         }
 
@@ -20,5 +20,6 @@ pipeline {
         }
     }
 }
+
 
 
