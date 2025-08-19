@@ -1,4 +1,4 @@
 provider "aws" {
-  # Configuration options
   region = "ap-south-1"
+  # Configuration options
 }
