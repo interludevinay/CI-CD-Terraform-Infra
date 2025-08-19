@@ -10,7 +10,7 @@ pipeline {
         stage('Plan') {
             steps {
                 sh 'terraform init -upgrade'
-                sh "terraform validate"
+                sh "terraform apply -auto-approve"
             }
         }
         stage('Get EC2 Public IP') {
@@ -26,6 +26,22 @@ pipeline {
                     }
                 }
             }
+        stage('Deploy to EC2') {
+    steps {
+        sshagent(['ec2-ssh-key']) {
+            sh """
+                ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
+                    sudo apt-get update -y &&
+                    sudo apt install nginx -y &&
+                    sudo systemctl start nginx &&
+                    sudo systemctl enable nginx
+
+                '
+            """
+        }
+    }
+}
+
         }
 }
 
