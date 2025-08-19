@@ -11,15 +11,14 @@ pipeline {
                     }
                 }
             }
-        }
         stage('Plan') {
             steps {
                 sh 'pwd;cd terraform/ ; ls'
                 sh 'ls'
             }
         }
+        }
     }
-}
 
 
 
