@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sh 'terraform init -upgrade'
                 sh 'terraform plan'
-                sh "terraform apply -auto-approve"
+                
             }
         }
         stage('Get EC2 Public IP') {
