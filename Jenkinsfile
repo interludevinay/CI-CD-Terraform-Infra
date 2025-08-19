@@ -6,10 +6,16 @@ pipeline {
                 script{
                         dir("terraform")
                         {
-                            git clone "https://github.com/yeshwanthlm/Terraform-Jenkins.git"
+                            git clone "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
                         }
                     }
                 }
+            }
+        }
+        stage('Plan') {
+            steps {
+                sh 'pwd;cd terraform/ ; ls'
+                sh 'ls'
             }
         }
     }
