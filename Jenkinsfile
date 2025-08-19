@@ -10,6 +10,7 @@ pipeline {
         stage('Plan') {
             steps {
                 sh 'terraform init -upgrade'
+                sh 'terraform plan'
                 sh "terraform apply -auto-approve"
             }
         }
