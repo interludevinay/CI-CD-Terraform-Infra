@@ -9,9 +9,8 @@ pipeline {
         }
         stage('Plan') {
             steps {
-                sh 'pwd; terraform init'
-                sh "pwd; terraform validate"
-                sh 'pwd; terraform plan'
+                sh 'terraform init'
+                sh "terraform validate"
             }
         }
         stage('Get EC2 Public IP') {
