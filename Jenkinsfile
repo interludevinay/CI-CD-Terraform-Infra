@@ -3,8 +3,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    sh 'pwd'
+                script{
+                        dir("terraform")
+                        {
+                            git clone "https://github.com/yeshwanthlm/Terraform-Jenkins.git"
+                        }
+                    }
                 }
             }
         }
