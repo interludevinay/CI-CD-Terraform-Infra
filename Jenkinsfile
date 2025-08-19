@@ -4,8 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script{
-                        dir("terraform")
-                        {
+                        dir("terraform"){
                             git "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
                         }
                     }
