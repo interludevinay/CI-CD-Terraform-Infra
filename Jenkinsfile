@@ -14,8 +14,8 @@ pipeline {
                 sh 'pwd; terraform plan'
             }
         }
-        }
     }
+}
 
 
 
