@@ -1,3 +1,8 @@
+provider "aws" {
+  # Configuration options
+  region = "ap-south-1"
+}
+
 # Key-pair
 resource "aws_key_pair" "terraform-key" {
   key_name = "terraform-key-enc"
