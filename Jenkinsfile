@@ -1,9 +1,7 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_DEFAULT_REGION    = 'ap-south-1'
+        AWS_DEFAULT_REGION = 'ap-south-1'
     }
     stages {
         stage('View') {
@@ -12,13 +10,19 @@ pipeline {
                 sh 'ls'
             }
         }
+
         stage('Plan') {
             steps {
-                sh 'terraform init -upgrade'
-                sh 'terraform plan'
-                
+                withCredentials([
+                    string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    sh 'terraform init -upgrade'
+                    sh 'terraform plan'
+                }
             }
         }
+
         stage('Get EC2 Public IP') {
             steps {
                 script {
@@ -29,9 +33,10 @@ pipeline {
                     
                     env.EC2_IP = ec2_ip
                     echo "✅ EC2 Public IP: ${ec2_ip}"
-                    }
                 }
             }
+        }
+
         stage('Deploy to EC2') {
             steps {
                 sshagent(['ec2-ssh-key']) {
@@ -41,16 +46,10 @@ pipeline {
                             sudo apt install nginx -y &&
                             sudo systemctl start nginx &&
                             sudo systemctl enable nginx
-        
                         '
                     """
                 }
             }
         }
-
-        }
+    }
 }
-
-
-
-
