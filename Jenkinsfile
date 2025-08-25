@@ -42,6 +42,10 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh """
+                        set -e
+                        echo "⏳ Waiting for EC2 to be ready..."
+                        sleep 40
+                        
                         ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
                             set -e
                             sudo apt-get update -y
