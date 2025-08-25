@@ -19,6 +19,7 @@ pipeline {
                 ]) {
                     sh 'terraform init -upgrade'
                     sh 'terraform plan'
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
@@ -46,8 +47,29 @@ pipeline {
                             sudo apt install nginx -y &&
                             sudo systemctl start nginx &&
                             sudo systemctl enable nginx
+                            echo "Terraform creation is sucessfull" > /var/www/html/index.html
                         '
                     """
+                }
+            }
+        }
+        stage('Destroy Approval') {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'HOURS') { // waits max 1 hour
+                        input message: 'Do you want to destroy the created resources?', ok: 'Yes, Destroy'
+                    }
+                }
+            }
+        }
+
+        stage('Destroy Resources') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    sh 'terraform destroy -auto-approve'
                 }
             }
         }
