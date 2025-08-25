@@ -46,14 +46,6 @@ pipeline {
                         echo "⏳ Waiting for EC2 to be ready..."
                         sleep 40
                         
-                        ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
-                            set -e
-                            sudo apt-get update -y
-                            sudo apt-get install -y nginx
-                            sudo systemctl start nginx
-                            sudo systemctl enable nginx
-                            echo "Terraform creation is successful" | sudo tee /var/www/html/index.html
-                        '
                     """
                 }
             }
