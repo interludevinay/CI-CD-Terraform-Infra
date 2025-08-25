@@ -43,20 +43,22 @@ pipeline {
                 sshagent(['ec2-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
-                            sudo apt-get update -y &&
-                            sudo apt install nginx -y &&
-                            sudo systemctl start nginx &&
+                            set -e
+                            sudo apt-get update -y
+                            sudo apt-get install -y nginx
+                            sudo systemctl start nginx
                             sudo systemctl enable nginx
-                            echo "Terraform creation is sucessfull" > /var/www/html/index.html
+                            echo "Terraform creation is successful" | sudo tee /var/www/html/index.html
                         '
                     """
                 }
             }
         }
+
         stage('Destroy Approval') {
             steps {
                 script {
-                    timeout(time: 1, unit: 'HOURS') { // waits max 1 hour
+                    timeout(time: 1, unit: 'HOURS') {
                         input message: 'Do you want to destroy the created resources?', ok: 'Yes, Destroy'
                     }
                 }
