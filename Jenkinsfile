@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
+                sh echo "Cloning code..."
             }
         }
 
