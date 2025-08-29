@@ -54,6 +54,7 @@ resource "aws_instance" "slave-machine" {
   }
   key_name = aws_key_pair.terraform-key.key_name
   security_groups = [aws_security_group.terraform-sg.name]
+  user_data = file("user.sh")
   tags = {
     name = "terraform-slave-sg"
   }  
