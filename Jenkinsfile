@@ -63,14 +63,14 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh """
-                        chmod 400 terraform-key-enc
+                        
                         ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
-                        set -e
-                        echo "⏳ Waiting for EC2 to be ready..."
-                        sleep 40
-
-                        docker pull interludevinay/flask-todo-app:latest
+                        echo "Connected to EC2 instance: $(hostname)"
+                        sudo apt-get update -y
+                        sudo apt-get install -y docker.io
+                        docker pull ${env.dockerHubUser}/flask-todo-app:latest
                         docker run -d --name=flask-app -p 5000:5000 flask-todo-app:latest
+                        '
                         
                     """
                 }
