@@ -11,7 +11,8 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy project files
-COPY . .
+COPY flask_todo_app/ ./flask_todo_app/
+
 
 # Expose port
 EXPOSE 5000
