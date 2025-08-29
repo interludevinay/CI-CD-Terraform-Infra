@@ -63,6 +63,7 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh """
+                        chmod 400 terraform-key-enc
                         ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
                         set -e
                         echo "⏳ Waiting for EC2 to be ready..."
