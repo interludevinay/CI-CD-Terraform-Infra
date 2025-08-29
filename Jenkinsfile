@@ -12,6 +12,7 @@ pipeline {
 
         stage('Docker Image'){
             steps{
+                sh "docker --version"
                sh "docker image -t flask-todo-app:latest ."
             }
         }
