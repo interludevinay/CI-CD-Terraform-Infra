@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git clone 'https://github.com/interludevinay/CI-CD-Terraform-Infra.git'
+                git "https://github.com/interludevinay/CI-CD-Terraform-Infra.git"
             }
         }
 
