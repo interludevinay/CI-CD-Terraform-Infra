@@ -4,10 +4,28 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
     stages {
-        stage('View') {
+        stage('Clone') {
             steps {
-                sh 'pwd'
-                sh 'ls'
+                git clone 'https://github.com/interludevinay/CI-CD-Terraform-Infra.git'
+            }
+        }
+
+        stage('Docker Image'){
+            steps{
+               sh "docker image -t flask-todo-app:latest ."
+            }
+        }
+
+        stage('Docker Image Push To DockerHub'){
+            steps{
+                echo "Pushing image to DockerHub"
+                withCredentials([usernamePassword('credentialsId':"dockerHubCred",
+                passwordVariable:"dockerHubPass",
+                usernameVariable:"dockerHubUser")]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                    sh "docker image tag flask-todo-app:latest ${env.dockerHubUser}/flask-todo-app:latest"
+                    sh "docker push ${env.dockerHubUser}/flask-todo-app:latest"
+                }
             }
         }
 
@@ -38,13 +56,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
+        stage('SSH to EC2 and Run container') {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP} '
                         set -e
                         echo "⏳ Waiting for EC2 to be ready..."
                         sleep 40
+
+                        docker pull interludevinay/flask-todo-app:latest
+                        docker run -d --name=flask-app -p 5000:5000 flask-todo-app:latest
                         
                     """
                 }
