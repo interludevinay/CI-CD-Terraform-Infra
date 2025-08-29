@@ -1,20 +1,7 @@
 # Key-pair
-resource "aws_key_pair" "terraform-key" {
-  key_name   = "terraform-key-enc"
-  public_key = tls_private_key.rsa.public_key_openssh
-  tags = {
-    name = "terraform-slave-sg"
-  }
-}
-
-resource "tls_private_key" "rsa" {
-  algorithm = "RSA"
-  rsa_bits = 4096
-}
-
-resource "local_file" "TF-KEY" {
-  filename = "TF=key"
-  content = tls_private_key.rsa.private_key_pem
+resource "aws_key_pair" "jenkins_key" {
+  key_name   = "Jenkins-key"
+  public_key = file("jenkins-ec2.pub")
 }
 
 # VPC & Security group
@@ -69,9 +56,8 @@ resource "aws_instance" "slave-machine" {
     volume_size = 8
     volume_type = "gp3"
   }
-  key_name        = aws_key_pair.terraform-key.key_name
+  key_name        = aws_key_pair.jenkins_key.key_name
   security_groups = [aws_security_group.terraform-sg.name]
-  user_data = file("user.sh")
   tags = {
     name = "terraform-slave-sg"
   }
