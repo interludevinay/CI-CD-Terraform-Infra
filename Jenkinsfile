@@ -83,9 +83,9 @@ pipeline {
                     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
                     # Pull and run container
-                    sudo docker pull ${env.dockerHubUser}/flask-todo-app:latest
+                    sudo docker pull vinayinterlude/flask-todo-app:latest
                     sudo docker rm -f flask-app || true
-                    sudo docker run -d --name flask-app -p 5000:5000 ${env.dockerHubUser}/flask-todo-app:latest
+                    sudo docker run -d --name flask-app -p 5000:5000 vinayinterlude/flask-todo-app:latest
 
                 EOF """ 
                 } 
