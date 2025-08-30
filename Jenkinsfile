@@ -85,7 +85,6 @@ pipeline {
     
                         # Pull and run container
                         sudo docker pull vinayinterlude/flask-todo-app:latest
-                        sudo docker rm -f flask-app || true
                         sudo docker run -d --name flask-app -p 5000:5000 vinayinterlude/flask-todo-app:latest
 
                     EOF
