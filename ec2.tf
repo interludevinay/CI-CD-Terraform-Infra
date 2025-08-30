@@ -40,6 +40,7 @@ resource "aws_security_group" "terraform-sg" {
     from_port = 0
     to_port   = 0
     protocol  = -1
+    cidr_blocks = ["0.0.0.0/0"]   # Allow all outbound internet access
   }
   tags = {
     name = "terraform-slave-sg"
