@@ -17,5 +17,10 @@ COPY flask_todo_app/ ./flask_todo_app/
 # Expose port
 EXPOSE 5000
 
+# Set environment variables
+ENV FLASK_APP=flask_todo_app/app.py \
+    FLASK_ENV=production \
+    FLASK_RUN_HOST=0.0.0.0
+
 # Start app
 CMD ["flask", "run"]
